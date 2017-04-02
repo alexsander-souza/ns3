@@ -22,6 +22,7 @@
 #include "ns3/log.h"
 #include "ns3/abort.h"
 #include "ns3/uinteger.h"
+#include "ns3/queue.h"
 #include "net-device.h"
 #include "packet.h"
 
@@ -229,6 +230,18 @@ TypeId NetDevice::GetTypeId (void)
 NetDevice::~NetDevice ()
 {
   NS_LOG_FUNCTION (this);
+}
+
+Ptr<Queue>
+NetDevice::GetQueue (void) const
+{
+  NS_LOG_FUNCTION (this);
+  return 0;
+}
+
+void NetDevice::SetLineProtocolStatus(bool established)
+{
+  NS_LOG_FUNCTION (this << "Not implemented in this device");
 }
 
 } // namespace ns3

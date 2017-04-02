@@ -24,7 +24,8 @@
 #include "ns3/simulator.h"
 #include "ns3/uinteger.h"
 
-namespace ns3 {
+namespace ns3
+{
 
 NS_LOG_COMPONENT_DEFINE ("BridgeNetDevice");
 
@@ -35,25 +36,25 @@ TypeId
 BridgeNetDevice::GetTypeId (void)
 {
   static TypeId tid = TypeId ("ns3::BridgeNetDevice")
-    .SetParent<NetDevice> ()
-    .SetGroupName("Bridge")
-    .AddConstructor<BridgeNetDevice> ()
-    .AddAttribute ("Mtu", "The MAC-level Maximum Transmission Unit",
-                   UintegerValue (1500),
-                   MakeUintegerAccessor (&BridgeNetDevice::SetMtu,
+                      .SetParent<BridgedNetDevice> ()
+                      .SetGroupName("Bridge")
+                      .AddConstructor<BridgeNetDevice> ()
+                      .AddAttribute ("Mtu", "The MAC-level Maximum Transmission Unit",
+                                     UintegerValue (1500),
+                                     MakeUintegerAccessor (&BridgeNetDevice::SetMtu,
                                          &BridgeNetDevice::GetMtu),
-                   MakeUintegerChecker<uint16_t> ())
-    .AddAttribute ("EnableLearning",
-                   "Enable the learning mode of the Learning Bridge",
-                   BooleanValue (true),
-                   MakeBooleanAccessor (&BridgeNetDevice::m_enableLearning),
-                   MakeBooleanChecker ())
-    .AddAttribute ("ExpirationTime",
-                   "Time it takes for learned MAC state entry to expire.",
-                   TimeValue (Seconds (300)),
-                   MakeTimeAccessor (&BridgeNetDevice::m_expirationTime),
-                   MakeTimeChecker ())
-  ;
+                                     MakeUintegerChecker<uint16_t> ())
+                      .AddAttribute ("EnableLearning",
+                                     "Enable the learning mode of the Learning Bridge",
+                                     BooleanValue (true),
+                                     MakeBooleanAccessor (&BridgeNetDevice::m_enableLearning),
+                                     MakeBooleanChecker ())
+                      .AddAttribute ("ExpirationTime",
+                                     "Time it takes for learned MAC state entry to expire.",
+                                     TimeValue (Seconds (300)),
+                                     MakeTimeAccessor (&BridgeNetDevice::m_expirationTime),
+                                     MakeTimeChecker ())
+                      ;
   return tid;
 }
 
@@ -82,7 +83,7 @@ BridgeNetDevice::DoDispose ()
   m_ports.clear ();
   m_channel = 0;
   m_node = 0;
-  NetDevice::DoDispose ();
+  BridgedNetDevice::DoDispose ();
 }
 
 void
@@ -134,8 +135,8 @@ BridgeNetDevice::ForwardUnicast (Ptr<NetDevice> incomingPort, Ptr<const Packet> 
 {
   NS_LOG_FUNCTION_NOARGS ();
   NS_LOG_DEBUG ("LearningBridgeForward (incomingPort=" << incomingPort->GetInstanceTypeId ().GetName ()
-                                                       << ", packet=" << packet << ", protocol="<<protocol
-                                                       << ", src=" << src << ", dst=" << dst << ")");
+                << ", packet=" << packet << ", protocol="<<protocol
+                << ", src=" << src << ", dst=" << dst << ")");
 
   Learn (src, incomingPort);
   Ptr<NetDevice> outPort = GetLearnedState (dst);
@@ -153,10 +154,10 @@ BridgeNetDevice::ForwardUnicast (Ptr<NetDevice> incomingPort, Ptr<const Packet> 
           Ptr<NetDevice> port = *iter;
           if (port != incomingPort)
             {
-              NS_LOG_LOGIC ("LearningBridgeForward (" << src << " => " << dst << "): " 
-                                                      << incomingPort->GetInstanceTypeId ().GetName ()
-                                                      << " --> " << port->GetInstanceTypeId ().GetName ()
-                                                      << " (UID " << packet->GetUid () << ").");
+              NS_LOG_LOGIC ("LearningBridgeForward (" << src << " => " << dst << "): "
+                            << incomingPort->GetInstanceTypeId ().GetName ()
+                            << " --> " << port->GetInstanceTypeId ().GetName ()
+                            << " (UID " << packet->GetUid () << ").");
               port->SendFrom (packet->Copy (), src, dst, protocol);
             }
         }
@@ -169,8 +170,8 @@ BridgeNetDevice::ForwardBroadcast (Ptr<NetDevice> incomingPort, Ptr<const Packet
 {
   NS_LOG_FUNCTION_NOARGS ();
   NS_LOG_DEBUG ("LearningBridgeForward (incomingPort=" << incomingPort->GetInstanceTypeId ().GetName ()
-                                                       << ", packet=" << packet << ", protocol="<<protocol
-                                                       << ", src=" << src << ", dst=" << dst << ")");
+                << ", packet=" << packet << ", protocol="<<protocol
+                << ", src=" << src << ", dst=" << dst << ")");
   Learn (src, incomingPort);
 
   for (std::vector< Ptr<NetDevice> >::iterator iter = m_ports.begin ();
@@ -179,10 +180,10 @@ BridgeNetDevice::ForwardBroadcast (Ptr<NetDevice> incomingPort, Ptr<const Packet
       Ptr<NetDevice> port = *iter;
       if (port != incomingPort)
         {
-          NS_LOG_LOGIC ("LearningBridgeForward (" << src << " => " << dst << "): " 
-                                                  << incomingPort->GetInstanceTypeId ().GetName ()
-                                                  << " --> " << port->GetInstanceTypeId ().GetName ()
-                                                  << " (UID " << packet->GetUid () << ").");
+          NS_LOG_LOGIC ("LearningBridgeForward (" << src << " => " << dst << "): "
+                        << incomingPort->GetInstanceTypeId ().GetName ()
+                        << " --> " << port->GetInstanceTypeId ().GetName ()
+                        << " (UID " << packet->GetUid () << ").");
           port->SendFrom (packet->Copy (), src, dst, protocol);
         }
     }
@@ -238,7 +239,7 @@ BridgeNetDevice::GetBridgePort (uint32_t n) const
   return m_ports[n];
 }
 
-void 
+void
 BridgeNetDevice::AddBridgePort (Ptr<NetDevice> bridgePort)
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -263,21 +264,21 @@ BridgeNetDevice::AddBridgePort (Ptr<NetDevice> bridgePort)
   m_channel->AddChannel (bridgePort->GetChannel ());
 }
 
-void 
+void
 BridgeNetDevice::SetIfIndex (const uint32_t index)
 {
   NS_LOG_FUNCTION_NOARGS ();
   m_ifIndex = index;
 }
 
-uint32_t 
+uint32_t
 BridgeNetDevice::GetIfIndex (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
   return m_ifIndex;
 }
 
-Ptr<Channel> 
+Ptr<Channel>
 BridgeNetDevice::GetChannel (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -291,14 +292,14 @@ BridgeNetDevice::SetAddress (Address address)
   m_address = Mac48Address::ConvertFrom (address);
 }
 
-Address 
+Address
 BridgeNetDevice::GetAddress (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
   return m_address;
 }
 
-bool 
+bool
 BridgeNetDevice::SetMtu (const uint16_t mtu)
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -306,7 +307,7 @@ BridgeNetDevice::SetMtu (const uint16_t mtu)
   return true;
 }
 
-uint16_t 
+uint16_t
 BridgeNetDevice::GetMtu (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -314,7 +315,7 @@ BridgeNetDevice::GetMtu (void) const
 }
 
 
-bool 
+bool
 BridgeNetDevice::IsLinkUp (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -322,12 +323,12 @@ BridgeNetDevice::IsLinkUp (void) const
 }
 
 
-void 
+void
 BridgeNetDevice::AddLinkChangeCallback (Callback<void> callback)
 {}
 
 
-bool 
+bool
 BridgeNetDevice::IsBroadcast (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -358,39 +359,31 @@ BridgeNetDevice::GetMulticast (Ipv4Address multicastGroup) const
 }
 
 
-bool 
+bool
 BridgeNetDevice::IsPointToPoint (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
   return false;
 }
 
-bool 
-BridgeNetDevice::IsBridge (void) const
-{
-  NS_LOG_FUNCTION_NOARGS ();
-  return true;
-}
-
-
-bool 
+bool
 BridgeNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protocolNumber)
 {
   NS_LOG_FUNCTION_NOARGS ();
   return SendFrom (packet, m_address, dest, protocolNumber);
 }
 
-bool 
+bool
 BridgeNetDevice::SendFrom (Ptr<Packet> packet, const Address& src, const Address& dest, uint16_t protocolNumber)
 {
   NS_LOG_FUNCTION_NOARGS ();
-  Mac48Address dst = Mac48Address::ConvertFrom (dest); 
+  Mac48Address dst = Mac48Address::ConvertFrom (dest);
 
   // try to use the learned state if data is unicast
   if (!dst.IsGroup ())
     {
       Ptr<NetDevice> outPort = GetLearnedState (dst);
-      if (outPort != NULL) 
+      if (outPort != NULL)
         {
           outPort->SendFrom (packet, src, dest, protocolNumber);
           return true;
@@ -412,7 +405,7 @@ BridgeNetDevice::SendFrom (Ptr<Packet> packet, const Address& src, const Address
 }
 
 
-Ptr<Node> 
+Ptr<Node>
 BridgeNetDevice::GetNode (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -420,7 +413,7 @@ BridgeNetDevice::GetNode (void) const
 }
 
 
-void 
+void
 BridgeNetDevice::SetNode (Ptr<Node> node)
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -428,7 +421,7 @@ BridgeNetDevice::SetNode (Ptr<Node> node)
 }
 
 
-bool 
+bool
 BridgeNetDevice::NeedsArp (void) const
 {
   NS_LOG_FUNCTION_NOARGS ();
@@ -436,14 +429,14 @@ BridgeNetDevice::NeedsArp (void) const
 }
 
 
-void 
+void
 BridgeNetDevice::SetReceiveCallback (NetDevice::ReceiveCallback cb)
 {
   NS_LOG_FUNCTION_NOARGS ();
   m_rxCallback = cb;
 }
 
-void 
+void
 BridgeNetDevice::SetPromiscReceiveCallback (NetDevice::PromiscReceiveCallback cb)
 {
   NS_LOG_FUNCTION_NOARGS ();

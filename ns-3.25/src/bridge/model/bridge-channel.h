@@ -22,11 +22,12 @@
 #include "ns3/channel.h"
 #include <vector>
 
-namespace ns3 {
+namespace ns3
+{
 
 /**
  * \ingroup bridge
- * 
+ *
  * \brief Virtual channel implementation for bridges (BridgeNetDevice).
  *
  * Just like BridgeNetDevice aggregates multiple NetDevices,

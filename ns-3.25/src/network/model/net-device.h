@@ -37,6 +37,7 @@ namespace ns3 {
 class Node;
 class Channel;
 class Packet;
+class Queue;
 
 /**
  * \ingroup network
@@ -601,6 +602,16 @@ public:
    */
   virtual bool SupportsSendFrom (void) const = 0;
 
+  /**
+   * \return Queue used by NetDevice; returns 0 if NetDevice doesn't use a Queue
+   */
+  virtual Ptr<Queue> GetQueue (void) const;
+
+  /**
+   * \param established      Whether the link is established
+   * Set the line protocol status, used by IsLinkUp ()
+   */
+  virtual void SetLineProtocolStatus(bool established);
 };
 
 } // namespace ns3

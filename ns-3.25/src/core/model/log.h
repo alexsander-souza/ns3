@@ -433,7 +433,7 @@ public:
    * \return This ParameterLogger, so it's chainable.
    */
   template<typename T>
-  ParameterLogger& operator<< (T param)
+  ParameterLogger& operator<< (const T& param)
   {
     if (m_first)
       {

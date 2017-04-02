@@ -349,6 +349,7 @@ Ipv4L3Protocol::SetupLoopback (void)
   interface->SetDevice (device);
   interface->SetNode (m_node);
   Ipv4InterfaceAddress ifaceAddr = Ipv4InterfaceAddress (Ipv4Address::GetLoopback (), Ipv4Mask::GetLoopback ());
+  ifaceAddr.SetScope(Ipv4InterfaceAddress::HOST);
   interface->AddAddress (ifaceAddr);
   uint32_t index = AddIpv4Interface (interface);
   Ptr<Node> node = GetObject<Node> ();
@@ -1221,8 +1222,8 @@ Ipv4L3Protocol::SelectSourceAddress (Ptr<const NetDevice> device,
         {
           iaddr = GetAddress (i, j);
           if (iaddr.IsSecondary ()) continue;
-          if (iaddr.GetScope () != Ipv4InterfaceAddress::LINK 
-              && iaddr.GetScope () <= scope) 
+          if (iaddr.GetScope () > scope) continue; 
+          if (dst.CombineMask (iaddr.GetMask ())  == iaddr.GetLocal ().CombineMask (iaddr.GetMask ()) )
             {
               return iaddr.GetLocal ();
             }

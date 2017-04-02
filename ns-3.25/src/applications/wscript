@@ -13,12 +13,21 @@ def build(bld):
         'model/packet-loss-counter.cc',
         'model/udp-echo-client.cc',
         'model/udp-echo-server.cc',
+        # 'model/arping.cc',
         'model/application-packet-probe.cc',
+        # 'model/igmpv2-ping.cc',
+        # 'model/igmpv2-pong.cc',
+        'model/multicast-sink.cc',
+        'model/multicast-source.cc',
         'helper/bulk-send-helper.cc',
         'helper/on-off-helper.cc',
         'helper/packet-sink-helper.cc',
         'helper/udp-client-server-helper.cc',
         'helper/udp-echo-helper.cc',
+        # 'helper/arping-helper.cc',
+        # 'helper/igmpv2-helper.cc',
+        'helper/multicast-sink-helper.cc',
+        'helper/multicast-source-helper.cc',
         ]
 
     applications_test = bld.create_ns3_module_test_library('applications')
@@ -39,12 +48,21 @@ def build(bld):
         'model/packet-loss-counter.h',
         'model/udp-echo-client.h',
         'model/udp-echo-server.h',
+        # 'model/arping.h',
         'model/application-packet-probe.h',
+        # 'model/igmpv2-ping.h',
+        # 'model/igmpv2-pong.h',
+        'model/multicast-sink.h',
+        'model/multicast-source.h',
         'helper/bulk-send-helper.h',
         'helper/on-off-helper.h',
         'helper/packet-sink-helper.h',
         'helper/udp-client-server-helper.h',
         'helper/udp-echo-helper.h',
+        # 'helper/arping-helper.h',
+        # 'helper/igmpv2-helper.h',
+        'helper/multicast-sink-helper.h',
+        'helper/multicast-source-helper.h',
         ]
 
     bld.ns3_python_bindings()

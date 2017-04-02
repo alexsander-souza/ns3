@@ -366,6 +366,7 @@ def configure(conf):
             if conf.env['CC_VERSION'] == cc_version_warn_strict_overflow:
                 env.append_value('CXXFLAGS', '-Wstrict-overflow=5')
 
+        env.append_value('CXXFLAGS', '-std=c++11')
         if sys.platform == 'win32':
             env.append_value("LINKFLAGS", "-Wl,--enable-runtime-pseudo-reloc")
         elif sys.platform == 'cygwin':

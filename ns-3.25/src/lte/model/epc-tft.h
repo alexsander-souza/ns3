@@ -159,7 +159,7 @@ private:
 };
 
 
-std::ostream& operator<< (std::ostream& os, EpcTft::Direction& d);
+std::ostream& operator<< (std::ostream& os, EpcTft::Direction const & d);
 
 
 } // namespace ns3

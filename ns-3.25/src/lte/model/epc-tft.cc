@@ -30,7 +30,7 @@ namespace ns3 {
 
 NS_LOG_COMPONENT_DEFINE ("EpcTft");
 
-std::ostream& operator<< (std::ostream& os, EpcTft::Direction& d)
+std::ostream& operator<< (std::ostream& os, EpcTft::Direction const &d)
 {
  switch (d)
     {
@@ -48,7 +48,7 @@ std::ostream& operator<< (std::ostream& os, EpcTft::Direction& d)
 }
 
 
-std::ostream& operator<< (std::ostream& os, EpcTft::PacketFilter& f)
+std::ostream& operator<< (std::ostream& os, EpcTft::PacketFilter const &f)
 {
   os << " direction: " << f.direction
      << " remoteAddress: "  << f.remoteAddress 

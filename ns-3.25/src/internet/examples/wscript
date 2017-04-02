@@ -7,3 +7,7 @@ def build(bld):
     obj = bld.create_ns3_program('main-simple',
                                  ['network', 'internet', 'applications'])
     obj.source = 'main-simple.cc'
+
+    obj = bld.create_ns3_program('igmpv2-packet',
+                                 ['point-to-point', 'network', 'internet', 'applications'])
+    obj.source = 'igmpv2-packet.cc'

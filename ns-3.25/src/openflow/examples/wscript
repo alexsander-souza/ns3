@@ -1,6 +1,18 @@
 ## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
 
 def build(bld):
-   obj = bld.create_ns3_program('openflow-switch',
+    # obj = bld.create_ns3_program('routing-3-switches-no-loop-topo',
+    #                             ['openflow', 'csma', 'internet', 'applications'])
+    # obj.source = 'routing-3-switches-no-loop.cc'
+    #
+    # obj = bld.create_ns3_program('of-dhcp',
+    #                             ['openflow', 'csma', 'internet', 'applications'])
+    # obj.source = 'openflow-dhcp.cc'
+
+    obj = bld.create_ns3_program('of-lldp',
                                 ['openflow', 'csma', 'internet', 'applications'])
-   obj.source = 'openflow-switch.cc'
+    obj.source = 'of-topo-lldp.cc'
+
+    obj = bld.create_ns3_program('of-arp',
+                                ['openflow', 'csma', 'internet', 'applications'])
+    obj.source = 'of-topo-arp.cc'

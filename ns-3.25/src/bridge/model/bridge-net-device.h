@@ -19,6 +19,7 @@
 #define BRIDGE_NET_DEVICE_H
 
 #include "ns3/net-device.h"
+#include "ns3/bridged-net-device.h"
 #include "ns3/mac48-address.h"
 #include "ns3/nstime.h"
 #include "ns3/bridge-channel.h"
@@ -26,20 +27,21 @@
 #include <string>
 #include <map>
 
-namespace ns3 {
+namespace ns3
+{
 
 class Node;
 
 /**
  * \defgroup bridge Bridge Network Device
- * 
+ *
  * \brief a virtual net device that bridges multiple LAN segments
  *
  * The BridgeNetDevice object is a "virtual" netdevice that aggregates
  * multiple "real" netdevices and implements the data plane forwarding
  * part of IEEE 802.1D.  By adding a BridgeNetDevice to a Node, it
  * will act as a "bridge", or "switch", to multiple LAN segments.
- * 
+ *
  * By default the bridge netdevice implements a "learning bridge"
  * algorithm (see 802.1D), where incoming unicast frames from one port
  * may occasionally be forwarded throughout all other ports, but
@@ -62,7 +64,7 @@ class Node;
  * \ingroup bridge
  * \brief a virtual net device that bridges multiple LAN segments
  */
-class BridgeNetDevice : public NetDevice
+class BridgeNetDevice : public BridgedNetDevice
 {
 public:
   /**
@@ -73,7 +75,7 @@ public:
   BridgeNetDevice ();
   virtual ~BridgeNetDevice ();
 
-  /** 
+  /**
    * \brief Add a 'port' to a bridge device
    * \param bridgePort the NetDevice to add
    *
@@ -89,19 +91,9 @@ public:
    */
   void AddBridgePort (Ptr<NetDevice> bridgePort);
 
-  /**
-   * \brief Gets the number of bridged 'ports', i.e., the NetDevices currently bridged.
-   *
-   * \return the number of bridged ports.
-   */
-  uint32_t GetNBridgePorts (void) const;
-
-  /**
-   * \brief Gets the n-th bridged port.
-   * \param n the port index
-   * \return the n-th bridged NetDevice
-   */
-  Ptr<NetDevice> GetBridgePort (uint32_t n) const;
+  // inherited from BridgedNetDevice base class
+  virtual uint32_t GetNBridgePorts (void) const;
+  virtual Ptr<NetDevice> GetBridgePort (uint32_t n) const;
 
   // inherited from NetDevice base class.
   virtual void SetIfIndex (const uint32_t index);
@@ -118,7 +110,6 @@ public:
   virtual bool IsMulticast (void) const;
   virtual Address GetMulticast (Ipv4Address multicastGroup) const;
   virtual bool IsPointToPoint (void) const;
-  virtual bool IsBridge (void) const;
   virtual bool Send (Ptr<Packet> packet, const Address& dest, uint16_t protocolNumber);
   virtual bool SendFrom (Ptr<Packet> packet, const Address& source, const Address& dest, uint16_t protocolNumber);
   virtual Ptr<Node> GetNode (void) const;

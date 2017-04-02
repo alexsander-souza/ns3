@@ -1124,7 +1124,8 @@ GlobalRouteManagerImpl::SPFNexthopCalculation (
         }
       else 
         {
-          w->SetRootExitDirection (v->GetRootExitDirection ());
+          if (v->GetNRootExitDirections() > 0)
+            w->SetRootExitDirection (v->GetRootExitDirection ());
         }
     }
   else 
@@ -1381,6 +1382,7 @@ GlobalRouteManagerImpl::SPFCalculate (Ipv4Address root)
     {
       NS_LOG_LOGIC ("SPFCalculate truncated for stub node " << root);
       delete m_spfroot;
+      m_spfroot = nullptr;
       return;
     }
 

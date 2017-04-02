@@ -205,6 +205,10 @@ public:
   operator Tester * () const;
 };
 
+#if __cplusplus >= 201103L
+template <typename T, typename... Args>
+Ptr<T> Create (Args... params);
+#else
 /**
  * \ingroup ptr
  * Create class instances by constructors with varying numbers
@@ -343,6 +347,7 @@ template <typename T,
           typename T7>
 Ptr<T> Create (T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7);
 /** @}*/
+#endif
 
 /**
  * \ingroup ptr
@@ -509,7 +514,14 @@ namespace ns3 {
 /*************************************************
  *  friend non-member function implementations
  ************************************************/
+#if __cplusplus >= 201103L
+template <typename T, typename... Args>
+Ptr<T> Create (Args... params)
+{
+  return Ptr<T> (new T (params...), false);
+}
 
+#else
 template <typename T>
 Ptr<T> Create (void)
 {
@@ -558,6 +570,18 @@ Ptr<T> Create (T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7)
   return Ptr<T> (new T (a1, a2, a3, a4, a5, a6, a7), false);
 }
 
+template <typename T, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8>
+Ptr<T> Create (T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7, T8 a8)
+{
+  return Ptr<T> (new T (a1, a2, a3, a4, a5, a6, a7, a8), false);
+}
+
+template <typename T, typename T1, typename T2, typename T3, typename T4, typename T5, typename T6, typename T7, typename T8, typename T9>
+Ptr<T> Create (T1 a1, T2 a2, T3 a3, T4 a4, T5 a5, T6 a6, T7 a7, T8 a8, T9 a9)
+{
+  return Ptr<T> (new T (a1, a2, a3, a4, a5, a6, a7, a8, a9), false);
+}
+#endif
 template <typename U>
 U * PeekPointer (const Ptr<U> &p)
 {
