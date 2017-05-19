@@ -6,16 +6,16 @@ def build(bld):
         'model/bridged-net-device.cc',
         'model/bridge-net-device.cc',
         'model/bridge-channel.cc',
-        # 'model/delayed-bridge-net-device.cc',
-        # 'model/packet-time.cc',
-        # 'model/delayed-bridge-policy.cc',
-        # 'model/delayed-bridge.cc',
-        # 'model/normal-delayed-bridge.cc',
-        # 'model/exponential-delayed-bridge.cc',
-        # 'model/pareto-delayed-bridge.cc',
-        # 'model/drop-bridge.cc',
-        # 'helper/bridge-helper.cc',
-        # 'helper/delayed-bridge-helper.cc'
+        'model/delayed-bridge-net-device.cc',
+        'model/packet-time.cc',
+	      'model/delayed-bridge-policy.cc',
+	      'model/delayed-bridge.cc',
+      	'model/normal-delayed-bridge.cc',
+      	'model/exponential-delayed-bridge.cc',	
+      	'model/pareto-delayed-bridge.cc',
+        'model/drop-bridge.cc',
+        'helper/bridge-helper.cc',
+	      'helper/delayed-bridge-helper.cc'
         ]
     headers = bld(features='ns3header')
     headers.module = 'bridge'
@@ -23,16 +23,16 @@ def build(bld):
         'model/bridge-net-device.h',
         'model/bridged-net-device.h',
         'model/bridge-channel.h',
-        # 'model/delayed-bridge-net-device.h',
-        # 'model/packet-time.h',
-        # 'model/delayed-bridge-policy.h',
-        # 'model/delayed-bridge.h',
-        # 'model/normal-delayed-bridge.h',
-        # 'model/exponential-delayed-bridge.h',
-        # 'model/pareto-delayed-bridge.h',
-        # 'model/drop-bridge.h',
-        # 'helper/bridge-helper.h',
-        # 'helper/delayed-bridge-helper.h'
+        'model/delayed-bridge-net-device.h',
+        'model/packet-time.h',
+	      'model/delayed-bridge-policy.h',
+	      'model/delayed-bridge.h',
+	      'model/normal-delayed-bridge.h',
+	      'model/exponential-delayed-bridge.h',
+      	'model/pareto-delayed-bridge.h',
+        'model/drop-bridge.h',
+        'helper/bridge-helper.h',
+      	'helper/delayed-bridge-helper.h'
         ]
 
     if bld.env['ENABLE_EXAMPLES']:

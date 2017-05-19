@@ -1,0 +1,32 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    module = bld.create_ns3_module('dhcp', ['core', 'internet', 'point-to-point'])
+    module.source = [
+        'model/dhcp-header.cc',
+        'model/dhcp-server.cc',
+        'model/abstract-dhcp-server.cc',
+        'model/dhcp-client.cc',
+        'helper/dhcp-helper.cc',
+        ]
+
+    #~ module_test = bld.create_ns3_module_test_library('dhcp')
+    #~ module_test.source = [
+        #~ 'test/dhcp-test-suite.cc',
+        #~ ]
+
+    headers = bld(features='ns3header')
+    headers.module = 'dhcp'
+    headers.source = [
+        'model/dhcp-client.h',
+        'model/dhcp-header.h',
+        'model/dhcp-server.h',
+        'model/abstract-dhcp-server.h',
+        'helper/dhcp-helper.h',
+        ]
+
+    if bld.env.ENABLE_EXAMPLES:
+        bld.recurse('examples')
+
+    # bld.ns3_python_bindings()
+

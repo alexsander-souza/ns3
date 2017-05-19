@@ -1,0 +1,17 @@
+Alterações para o BNG
+---------------------
+
+* Data-path
+  * ACL
+  * QoS ?
+
+* Multicast
+  * CAC
+  * NAS-Initiated
+
+* RADIUS
+  * NAS database
+
+* Access Node
+  * DHCP option 82 ?
+  * Multicast White/Gray/Black lists
